@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HSC 25 Years</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: "Segoe UI", sans-serif;
+      overflow: hidden;
+    }
+
+    .hero {
+      position: relative;
+      height: 100vh;
+      background: linear-gradient(to bottom right, #0040A9, #002789);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      background-image: url('https://i.ibb.co/9pNGPKs/blueprint-bg.png'); /* blueprint-style image */
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.08;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    canvas#confetti {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo-block h1 {
+      font-size: 5rem;
+      margin: 0;
+    }
+
+    .logo-block sup {
+      font-size: 1.5rem;
+      vertical-align: super;
+    }
+
+    .subtitle {
+      margin: 10px 0;
+      font-size: 1.3rem;
+      letter-spacing: 2px;
+    }
+
+    .badge {
+      background: white;
+      color: #0040A9;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 15px;
+    }
+
+    .badge span {
+      color: #F48818;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <canvas id="confetti"></canvas>
+    <div class="content">
+      <div class="logo-block">
+        <h1>HSC<sup>®</sup></h1>
+        <p class="subtitle">HSC Systems Limited</p>
+        <div class="badge">25 <span>Years</span> OF <span>SERVICE EXCELLENCE</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const colors = ["#F48818", "#ffffff", "#0040A9", "#002789"];
+    const particles = [];
+
+    for (let i = 0; i < 100; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 4 + 1,
+        dx: Math.random() * 2 - 1,
+        dy: Math.random() * 2 + 1,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.fillStyle = p.color;
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if (p.y > canvas.height) p.y = 0;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.x < 0) p.x = canvas.width;
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
