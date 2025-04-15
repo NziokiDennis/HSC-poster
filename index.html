@@ -3,20 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HSC 25 Years</title>
+  <title>HSC at 25 Years</title>
+
   <style>
+    /*Base Reset & Font */
     body, html {
       margin: 0;
       padding: 0;
       height: 100%;
       font-family: "Segoe UI", sans-serif;
-      overflow: hidden;
+      overflow: hidden; /* prevent scroll from canvas or particles */
     }
 
+    /*Hero Section — fills viewport, centers content */
     .hero {
       position: relative;
       height: 100vh;
-      background: linear-gradient(to bottom right, #0040A9, #002789);
+      background: linear-gradient(to bottom right, #0040A9, #002789); /* smooth corporate gradient */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -25,51 +28,55 @@
       overflow: hidden;
     }
 
+    /*Background Blueprint Image — subtle watermark layer */
     .hero::before {
       content: "";
-      background-image: url('https://i.ibb.co/9pNGPKs/blueprint-bg.png'); /* blueprint-style image */
+      background-image: url('https://i.ibb.co/9pNGPKs/blueprint-bg.png'); /* image from online source */
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
-      opacity: 0.08;
+      opacity: 0.08; /* low visibility = class */
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       z-index: 0;
     }
 
+    /*Canvas for floating confetti/particles */
     canvas#confetti {
       position: absolute;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100%;
       height: 100%;
-      z-index: 1;
+      z-index: 1; /* sits above background but behind text */
     }
 
+    /*Content block — sits above everything else */
     .content {
       position: relative;
       z-index: 2;
     }
 
+    /*Company Logo Text Styling */
     .logo-block h1 {
       font-size: 5rem;
       margin: 0;
     }
 
+    /*Symbol */
     .logo-block sup {
       font-size: 1.5rem;
       vertical-align: super;
     }
 
+    /*Tagline below company name */
     .subtitle {
       margin: 10px 0;
       font-size: 1.3rem;
       letter-spacing: 2px;
     }
 
+    /*"25 Years of Excellence" badge */
     .badge {
       background: white;
       color: #0040A9;
@@ -80,14 +87,17 @@
       margin-top: 15px;
     }
 
+    /*Highlight orange text inside the badge */
     .badge span {
       color: #F48818;
     }
   </style>
 </head>
 <body>
+
   <div class="hero">
     <canvas id="confetti"></canvas>
+
     <div class="content">
       <div class="logo-block">
         <h1>HSC<sup>®</sup></h1>
@@ -98,25 +108,28 @@
   </div>
 
   <script>
+    //Confetti Particle Animation
     const canvas = document.getElementById("confetti");
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const colors = ["#F48818", "#ffffff", "#0040A9", "#002789"];
+    const colors = ["#F48818", "#ffffff", "#0040A9", "#002789"]; // 🎨 On-brand palette
     const particles = [];
 
+    //Generate 100 particles with random positions, size, velocity
     for (let i = 0; i < 100; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        r: Math.random() * 4 + 1,
-        dx: Math.random() * 2 - 1,
-        dy: Math.random() * 2 + 1,
+        r: Math.random() * 4 + 1, // radius
+        dx: Math.random() * 2 - 1, // horizontal speed (-1 to 1)
+        dy: Math.random() * 2 + 1, // vertical speed (1 to 3)
         color: colors[Math.floor(Math.random() * colors.length)]
       });
     }
 
+    //Animate particles frame by frame
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach(p => {
@@ -125,9 +138,11 @@
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
 
+        //Update position
         p.x += p.dx;
         p.y += p.dy;
 
+        //Wrap-around logic
         if (p.y > canvas.height) p.y = 0;
         if (p.x > canvas.width) p.x = 0;
         if (p.x < 0) p.x = canvas.width;
@@ -138,10 +153,12 @@
 
     draw();
 
+    //Adjust canvas size on window resize
     window.addEventListener("resize", () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     });
   </script>
+
 </body>
 </html>
